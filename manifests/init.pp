@@ -145,12 +145,12 @@ define calico::ipPool (
 {
   file { "/etc/calico/ipPool-${ipPoolCIDR}.yaml":
     ensure => file,
-    content => template('calico/ipPool.yaml'),
+    content => template('calico/ipPool.yaml.erb'),
   }
   
   exec { "Configure calico ipPool for CIDR $ipPoolCIDR":
     command => "\${grep ETCD_ENDPOINTS /etc/calico/calico.env} /opt/cni/bin/calicoctl apply -f /etc/calico/ipPool-${ipPoolCIDR}.yaml",
     unless => "\${grep ETCD_ENDPOINTS /etc/calico/calico.env} /opt/cni/bin/calicoctl apply -f /etc/calico/ipPool-${ipPoolCIDR}.yaml",
-    require => [ Service["calico-node", File["/opt/cni/bin/calicoctl"], File["/etc/calico/ipPool-${ipPoolCIDR}.yaml"] ],
+    require => [ Service["calico-node"], File["/opt/cni/bin/calicoctl"], File["/etc/calico/ipPool-${ipPoolCIDR}.yaml"] ],
   }
 }
