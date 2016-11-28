@@ -1,6 +1,6 @@
 # calico
 
-# REQUIRES jetstack-k8s
+# REQUIRES jetstack-k8s (shares docker)
 
 #### Table of Contents
 
