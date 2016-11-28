@@ -113,6 +113,10 @@ define calico::node (
 include ::systemd
 
 {
+  package { "docker":
+    ensure => installed,
+  }
+
   file { "/etc/cni/calico.env":
     ensure => file,
     content => template('calico/calico.env.erb'),
@@ -125,17 +129,3 @@ include ::systemd
   } ~>
   Exec['systemctl-daemon-reload']
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
