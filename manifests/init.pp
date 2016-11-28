@@ -156,8 +156,8 @@ define calico::ipPool (
   }
   
   exec { "Configure calico ipPool for CIDR $ip_pool":
-    command => "\${/usr/bin/grep ETCD_ENDPOINTS /etc/calico/calico.env} /opt/cni/bin/calicoctl apply -f /etc/calico/ipPool-${ip_pool}.yaml",
-    unless => "\${/usr/bin/grep ETCD_ENDPOINTS /etc/calico/calico.env} /opt/cni/bin/calicoctl get -f /etc/calico/ipPool-${ip_pool}.yaml | /usr/bin/grep ${ip_pool}/${ip_mask}",
+    command => "export ETCD_ENDPOINTS=`/usr/bin/grep ETCD_ENDPOINTS /etc/calico/calico.env` && /opt/cni/bin/calicoctl apply -f /etc/calico/ipPool-${ip_pool}.yaml",
+    unless => "export ETCD_ENDPOINTS=`/usr/bin/grep ETCD_ENDPOINTS /etc/calico/calico.env` && /opt/cni/bin/calicoctl get -f /etc/calico/ipPool-${ip_pool}.yaml | /usr/bin/grep ${ip_pool}/${ip_mask}",
     require => [ Service["calico-node"], File["/opt/cni/bin/calicoctl"], File["/etc/calico/ipPool-${ip_pool}.yaml"] ],
   }
 }
