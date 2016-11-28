@@ -66,7 +66,7 @@ define calico::lo_install (
 )
 {
   archive { "download and extract cni-lo version $cni_plugin_version":
-    source => "https://github.com/containernetworking/cni/releases/download/v${cni_plugin_version}/cni-v${cni_plugin_version}.tgz"
+    source => "https://github.com/containernetworking/cni/releases/download/v${cni_plugin_version}/cni-v${cni_plugin_version}.tgz",
     extract_path => '/opt/cni/bin/',
     extract_flags => '-xzf loopback',
     mode => '755',
