@@ -84,6 +84,6 @@ define calico::config (
   file { "/etc/cni/net.d/10-calico.conf":
     ensure => file,
     content => template('calico/10-calico.conf.erb'),
-    require => Class['etcd'],
+    require => Class['calico'],
   }
 }
