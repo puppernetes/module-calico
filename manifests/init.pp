@@ -59,13 +59,20 @@ define calico::bin_install (
     destination => '/opt/cni/bin/',
     mode => '0755',
     require => Class['calico'],
+    before => File["/opt/cni/bin/calico"]
   }
   wget::fetch { "calico-ipam-v${calico_cni_version}":
     source => "https://github.com/projectcalico/calico-cni/releases/download/v${calico_cni_version}/calico-ipam",
     destination => '/opt/cni/bin/',
     mode => '0755',
     require => Class['calico'],
+    before => File["/opt/cni/bin/calico-ipam"],
   }
+  file { ["/opt/cni/bin/calico","/opt/cni/bin/calico-ipam"]:
+    ensure => file,
+    mode   => '0755',
+  }
+  
 }
 
 define calico::lo_install (
