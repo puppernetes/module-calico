@@ -77,7 +77,7 @@ define calico::lo_install (
     path => "/tmp/cni-v${cni_plugin_version}.tgz",
     extract => true,
     extract_path => '/opt/cni/bin/',
-    extract_flags => '-xzf loopback',
+    extract_command => 'tar -xzf %s ./loopback',
     creates => '/opt/cni/bin/loopback',
     require => Class['calico'],
   }
