@@ -45,7 +45,7 @@
 
 class calico
 {
-  file { ['/etc/cni', '/etc/cni/net.d', '/opt/cni', '/opt/cni/bin']:
+  file { ['/etc/cni', '/etc/cni/net.d', '/etc/calico', '/opt/cni', '/opt/cni/bin']:
     ensure => directory,
   }
 }
@@ -110,14 +110,14 @@ define calico::node (
   Integer $calico_etcd_port,
 )
 
-include ::systemd
-
 {
+  include ::systemd
+
   package { "docker":
     ensure => installed,
   }
 
-  file { "/etc/cni/calico.env":
+  file { "/etc/calico/calico.env":
     ensure => file,
     content => template('calico/calico.env.erb'),
     require => Class['calico'],
