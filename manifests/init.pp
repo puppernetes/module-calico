@@ -55,7 +55,7 @@ define calico::bin_install (
 ) 
 {
   wget::fetch { "download calico-cni version $calico_cni_version":
-    source => [ "https://github.com/projectcalico/calico-cni/releases/download/v${calico_cni_version}/calico", "https://github.com/projectcalico/calico-cni/releases/download/v${calico_cni_version}/calico" ]
+    source => [ "https://github.com/projectcalico/calico-cni/releases/download/v${calico_cni_version}/calico", "https://github.com/projectcalico/calico-cni/releases/download/v${calico_cni_version}/calico" ],
     destination => '/opt/cni/bin/',
     mode => '755',
   }
