@@ -45,7 +45,7 @@
 
 class calico
 {
-  file { ['/etc/cni/net.d', '/opt/cni/bin']:
+  file { ['/etc/cni', '/etc/cni/net.d', '/opt/cni', '/opt/cni/bin']:
     ensure => directory,
   }
 }
@@ -58,11 +58,13 @@ define calico::bin_install (
     source => "https://github.com/projectcalico/calico-cni/releases/download/v${calico_cni_version}/calico",
     destination => '/opt/cni/bin/',
     mode => '755',
+    require => Class['calico'],
   }
   wget::fetch { "calico-ipam-v${calico_cni_version}":
     source => "https://github.com/projectcalico/calico-cni/releases/download/v${calico_cni_version}/calico-ipam",
     destination => '/opt/cni/bin/',
     mode => '755',
+    require => Class['calico'],
   }
 }
 
@@ -76,6 +78,7 @@ define calico::lo_install (
     extract_path => '/opt/cni/bin/',
     extract_flags => '-xzf loopback',
     creates => '/opt/cni/bin/loopback',
+    require => Class['calico'],
   }
 }
 
