@@ -110,9 +110,9 @@ define calico::node (
   Integer $calico_etcd_port,
 )
 
-include ::systemd
-
 {
+  include ::systemd
+
   package { "docker":
     ensure => installed,
   }
