@@ -68,14 +68,7 @@ define calico::bin_install (
     before => File["/opt/cni/bin/calico-ipam"],
   }
   
-  wget::fetch { "calicoctl-v${calico_cni_version}":
-    source => "https://github.com/projectcalico/calico-cni/releases/download/v${calico_cni_version}/calicoctl",
-    destination => '/opt/cni/bin/',
-    require => Class['calico'],
-    before => File["/opt/cni/bin/calicoctl"],
-  }
-  
-  file { ["/opt/cni/bin/calico","/opt/cni/bin/calico-ipam","/opt/cni/bin/calicoctl"]:
+  file { ["/opt/cni/bin/calico","/opt/cni/bin/calico-ipam"]:
     ensure => file,
     mode   => '0755',
   }
@@ -119,6 +112,18 @@ define calico::node (
 {
   include ::systemd
   include k8s
+  
+  wget::fetch { "calicoctl-v${calico_cni_version}":
+    source => "https://github.com/projectcalico/calico-containers/releases/download/v${calico_node_version}/calicoctl",
+    destination => '/opt/cni/bin/',
+    require => Class['calico'],
+    before => File["/opt/cni/bin/calicoctl"],
+  }
+
+  file { ["/opt/cni/bin/calicoctl"]:
+    ensure => file,
+    mode   => '0755',
+  }
 
   file { "/etc/calico/calico.env":
     ensure => file,
@@ -144,14 +149,14 @@ define calico::ipPool (
   String $ipipEnabled
 )
 {
-  file { "/etc/calico/ipPool-${ipPoolCIDR}.yaml":
+  file { "/etc/calico/ipPool-${ipPool}.yaml":
     ensure => file,
     content => template('calico/ipPool.yaml.erb'),
   }
   
   exec { "Configure calico ipPool for CIDR $ipPoolCIDR":
-    command => "\${grep ETCD_ENDPOINTS /etc/calico/calico.env} /opt/cni/bin/calicoctl apply -f /etc/calico/ipPool-${ipPoolCIDR}.yaml",
-    unless => "\${grep ETCD_ENDPOINTS /etc/calico/calico.env} /opt/cni/bin/calicoctl get -f /etc/calico/ipPool-${ipPoolCIDR}.yaml | grep ${ipPoolCIDR}",
+    command => "\${/usr/bin/grep ETCD_ENDPOINTS /etc/calico/calico.env} /opt/cni/bin/calicoctl apply -f /etc/calico/ipPool-${ipPoolCIDR}.yaml",
+    unless => "\${/usr/bin/grep ETCD_ENDPOINTS /etc/calico/calico.env} /opt/cni/bin/calicoctl get -f /etc/calico/ipPool-${ipPoolCIDR}.yaml | /usr/bin/grep ${ipPoolCIDR}",
     require => [ Service["calico-node"], File["/opt/cni/bin/calicoctl"], File["/etc/calico/ipPool-${ipPoolCIDR}.yaml"] ],
   }
 }
