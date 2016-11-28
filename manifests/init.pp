@@ -50,10 +50,11 @@ class calico
   }
 }
 
+$calicofiles=[ "https://github.com/projectcalico/calico-cni/releases/download/v${calico_cni_version}/calico", "https://github.com/projectcalico/calico-cni/releases/download/v${calico_cni_version}/calico" ]
+
 define calico::bin_install (
   String $calico_cni_version,
 ) 
-$calicofiles=[ "https://github.com/projectcalico/calico-cni/releases/download/v${calico_cni_version}/calico", "https://github.com/projectcalico/calico-cni/releases/download/v${calico_cni_version}/calico" ]
 {
   wget::fetch { $calicofiles:
     destination => '/opt/cni/bin/',
