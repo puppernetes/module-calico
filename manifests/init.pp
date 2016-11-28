@@ -150,7 +150,7 @@ define calico::ipPool (
   String $ipip_enabled
 )
 {
-  file { "/etc/calico/ipPool-${ipPool}.yaml":
+  file { "/etc/calico/ipPool-${ip_pool}.yaml":
     ensure => file,
     content => template('calico/ipPool.yaml.erb'),
   }
