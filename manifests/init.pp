@@ -163,7 +163,7 @@ define calico::ipPool (
   }
 }
 
-class calico::policy_controller (
+define calico::policy_controller (
   String $dns_root,
   Integer $etcd_count,
   Integer $calico_etcd_port
