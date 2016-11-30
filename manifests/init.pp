@@ -166,7 +166,7 @@ define calico::ipPool (
 class calico::policy-controller (
   String $dns_root,
   Integer $etcd_count,
-  Integer $calico-etcd_port
+  Integer $calico_etcd_port
 )
 {
   file { "/root/calico-config.yaml":
