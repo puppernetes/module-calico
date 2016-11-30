@@ -6,7 +6,7 @@ metadata:
     namespace: kube-system
     data:
       # Configure this with the location of your etcd cluster.
-        ETCD_ENDPOINTS: "<% array=[] -%>
+        etcd_endpoints: "<% array=[] -%>
 <% @etcd_count.to_i.times do |i| -%>
 <%  array<<"http://etcd-#{i}.#{@ec2_tag_cluster}.#{@dns_root}:#{@k8s_etcd_port}" -%>
 <% end -%>
