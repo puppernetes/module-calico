@@ -48,4 +48,10 @@ class calico
   file { ['/etc/cni', '/etc/cni/net.d', '/etc/calico', '/opt/cni', '/opt/cni/bin']:
     ensure => directory,
   }
+  
+  exec { "deploy calico policy controller":
+    command => "/usr/bin/kubectl apply -f /root/policy-controller-rs.yaml",
+    unless => "/usr/bin/kubectl get -f /root/policy-controller-rs.yaml",
+    require => [ Exec["deploy calico config"], File["/root/policy-controller-rs.yaml"] ],
+  } 
 }
